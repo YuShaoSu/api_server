@@ -9,7 +9,7 @@ router.get('/auth/login', function(req, res){
 });
 
 //set redirect url as localhost:3000/auth
-router.all('/auth', function(req, res){
+router.all('/auth', function(req, res, next){
     var requestCode = req.query.code;
 
     const option_post = {
@@ -30,8 +30,6 @@ router.all('/auth', function(req, res){
 
     requestp(option_post)
     .then( response => {
-
-        console.log(response.access_token);
         const option_get = {
             uri: oauth.profile_url,
             headers:{
@@ -41,7 +39,9 @@ router.all('/auth', function(req, res){
         };
         requestp(option_get)
         .then( body => {
+            req.session.profile = body;
             console.log(body);
+            next();
         })
         .catch( err => {
             console.log(err);
@@ -51,8 +51,27 @@ router.all('/auth', function(req, res){
     .catch( err => {
         console.log(err);
     });
+}, function(req, res){
+    console.log(req.session.profile.username);
+    if(req.session.profile){
+        var ID = req.session.profile.username;
+        if(!ID){
+            console.log("no student id");
+            // (modify)
+            res.redirect('/');
+            return;
+        }
+        console.log(ID);
+        // (modify)
+        res.redirect('/');  
+    }
 });
-      
+
+router.get('/logout', function(req, res){
+    req.session.destroy(); 
+    // (modify)
+    res.redirect('/');
+})
 
 
 
