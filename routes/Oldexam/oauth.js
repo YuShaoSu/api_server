@@ -65,6 +65,15 @@ module.exports = {
 			res.redirect('https://oldexam.csunion.nctu.me?'+req.session.qs);
 	    }
 	},
+	loginRequired: function(req, res, next){
+		if(req.session.profile){
+			res.send('Welcome!')
+			next()
+		}
+		else{
+			return
+		}
+	},
 	check: function(req, res){
 		if(req.session.profile){
 			res.json({id:req.session.profile.username});

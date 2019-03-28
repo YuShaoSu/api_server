@@ -20,10 +20,10 @@ var storage = multer.diskStorage({
 	filename: oldexamRouter.examDB
 })
 var upload = multer({storage: storage})
-router.get('/oldexam/course', oldexamRouter.getCourse)
-router.get('/oldexam/exam', oldexamRouter.getExam)
-router.post('/oldexam/upload', upload.single('oldexam'), oldexamRouter.uploadExam)
-router.get('/oldexam/download', oldexamRouter.downloadExam)
+router.get('/oldexam/course', oldexamOauth.loginRequired, oldexamRouter.getCourse)
+router.get('/oldexam/exam', oldexamOauth.loginRequired, oldexamRouter.getExam)
+router.post('/oldexam/upload', oldexamOauth.loginRequired, upload.single('oldexam'), oldexamRouter.uploadExam)
+router.get('/oldexam/download', oldexamOauth.loginRequired, oldexamRouter.downloadExam)
 
 // oauth for oldexam
 router.get('/oldexam/login', oldexamOauth.login)
