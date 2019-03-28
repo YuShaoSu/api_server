@@ -28,10 +28,9 @@ module.exports = {
 		console.log(req.file.original)
 	},
  	downloadExam: function(req, res){
-		var file = req.body.eid
+		var file = req.query.eid
 		var fileLocation = path.join('/usr/local/www/apache24/data/oldexam/exam', file.toString())
-		res.setHeader('Content-type', 'application/pdf');
-		res.download(fileLocation, req.body.fn)
+		res.download(fileLocation, req.query.fn)
  	},
 	examDest: function(req, file, cb){
 		cb(null, '/usr/local/www/apache24/data/oldexam/exam')
